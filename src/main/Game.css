@@ -9,6 +9,23 @@
     background-color: white;
 }
 
+.game .scores {
+    display: flex ;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+
+    background-color: #0002;
+}
+
+.game .scores .x-score {
+    font-size: 2.3em;
+}
+
+.game .scores .o-score {
+    font-size: 2.3em;    
+}
+
 .game .h1 {
     color: black;
     font-size: 2.3em;

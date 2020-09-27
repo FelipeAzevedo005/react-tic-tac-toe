@@ -8,6 +8,10 @@ const initialState = {
     winner: null
 }
 
+var winner = null;
+var xScore = 0;
+var oScore = 0;
+
 export default class Game extends Component {
     constructor(props) {
         super(props);
@@ -24,16 +28,16 @@ export default class Game extends Component {
     handleClick(i) {
         const squares = [...this.state.squares];
         const player = this.state.currentPlayer;
-
+        
         if (this.chooseWinner(squares) || squares[i]) {
             return;
         }
-
+        
         squares[i] = player;
         
         this.setState({ 
             squares: squares,  
-            currentPlayer: this.nextPlayer(player) 
+            currentPlayer: this.nextPlayer(player),
         });
     }
     
@@ -59,11 +63,27 @@ export default class Game extends Component {
         return null;
     }
 
+    isX(player) {
+        if (player === "X") {
+            return true;
+        } else return false;
+    }
+
+    newGame() {
+        this.setState({ ...initialState }); 
+    }
+
     render() {
         let status;
-        const winner = this.chooseWinner(this.state.squares);
+        winner = this.chooseWinner(this.state.squares);
         
         if (winner) {
+            if (this.isX(winner)) {
+                xScore++
+            } else {
+                oScore++;
+            }
+
             status = `Vencedor: ${winner}!`;
         } else {
             status = `Vez de ${this.state.currentPlayer}`
@@ -71,12 +91,22 @@ export default class Game extends Component {
         
         return (
             <div className="game">
+                <div className="scores">
+                    <span className="x-score">
+                        X : {xScore}
+                    </span>
+                    <span className="o-score">
+                        O : {oScore}
+                    </span>
+                </div>
+
                 <Board 
                     squares={this.state.squares}
                     onClick={i => this.handleClick(i)} />
                 <div className="info">
                     <h1>{status}</h1>
                 </div>
+                <button onClick={() => this.newGame()}>Recomeçar Jogo</button>
             </div>
         );
     }
