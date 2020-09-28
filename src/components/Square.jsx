@@ -3,7 +3,7 @@ import "./Square.css"
 
 export default props => {
     return (
-        <button className="square" onClick={props.onClick}>
+        <button className={`square ${props.classes} ${props.value}`} onClick={props.onClick}>
            {props.value} 
         </button>
     );

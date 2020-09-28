@@ -6,27 +6,61 @@
 
     height: 100vh;
 
-    background-color: white;
+    background-color: #111;
 }
 
 .game .scores {
     display: flex ;
     align-items: center;
     justify-content: space-around;
+    
     width: 100%;
 
-    background-color: #0002;
+    border: 3px solid lightseagreen;
+    border-radius: 5px;
+
+    color: #f5f5f5;
+
+    background-color: #0000;
 }
 
-.game .scores .x-score {
-    font-size: 2.3em;
-}
-
+.game .scores .x-score,
 .game .scores .o-score {
-    font-size: 2.3em;    
+    font-size: 2.3rem;
 }
 
-.game .h1 {
-    color: black;
+.game .scores .x-score strong {
+    color: lime;
+}
+
+.game .scores .o-score strong {
+    color: fuchsia;    
+}
+
+.game .info h1 {
+    color: #f5f5f5;
     font-size: 2.3em;
+}
+
+.game .restart {
+    border: 3px solid lightseagreen;
+    border-radius: 5px;
+
+    height: 50px;
+    width: 130px;
+
+    color: #f5f5f5;
+
+    background-color: #0000;
+
+    outline: none;
+}
+
+.game .restart:active {
+    border: 3px solid lightseagreen;
+    background-color: #0005;
+}
+
+.game .restart .material-icons-round {
+    font-size: 36px;
 }

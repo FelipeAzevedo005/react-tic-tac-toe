@@ -93,10 +93,10 @@ export default class Game extends Component {
             <div className="game">
                 <div className="scores">
                     <span className="x-score">
-                        X : {xScore}
+                        <strong>X</strong> : {xScore}
                     </span>
                     <span className="o-score">
-                        O : {oScore}
+                        <strong>O</strong> : {oScore}
                     </span>
                 </div>
 
@@ -106,7 +106,9 @@ export default class Game extends Component {
                 <div className="info">
                     <h1>{status}</h1>
                 </div>
-                <button onClick={() => this.newGame()}>Recomeçar Jogo</button>
+                <button className="restart" onClick={() => this.newGame()}>
+                    <i className="material-icons-round">refresh</i>
+                </button>
             </div>
         );
     }
