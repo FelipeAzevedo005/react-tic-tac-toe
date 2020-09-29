@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Game.css";
 import Board from "../components/Board";
+import ScoreBar from "../components/ScoreBar";
 
 const initialState = {
     squares: Array(9).fill(null),
@@ -91,21 +92,16 @@ export default class Game extends Component {
         
         return (
             <div className="game">
-                <div className="scores">
-                    <span className="x-score">
-                        <strong>X</strong> : {xScore}
-                    </span>
-                    <span className="o-score">
-                        <strong>O</strong> : {oScore}
-                    </span>
-                </div>
+                <ScoreBar xScore={xScore} oScore={oScore}/>
 
                 <Board 
                     squares={this.state.squares}
                     onClick={i => this.handleClick(i)} />
+
                 <div className="info">
                     <h1>{status}</h1>
                 </div>
+
                 <button className="restart" onClick={() => this.newGame()}>
                     <i className="material-icons-round">refresh</i>
                 </button>
