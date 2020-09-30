@@ -6,12 +6,11 @@ import ScoreBar from "../components/ScoreBar";
 const initialState = {
     squares: Array(9).fill(null),
     currentPlayer: "X",
-    winner: null
-}
-
-var winner = null;
-var xScore = 0;
-var oScore = 0;
+    winner: null,
+    xScore: 0,
+    oScore: 0,
+    status: ""
+};
 
 export default class Game extends Component {
     constructor(props) {
@@ -30,19 +29,47 @@ export default class Game extends Component {
         const squares = [...this.state.squares];
         const player = this.state.currentPlayer;
         
-        if (this.chooseWinner(squares) || squares[i]) {
+        if (this.calculateWinner(squares) || squares[i]) {
             return;
         }
         
         squares[i] = player;
         
+        const winner = this.calculateWinner(squares);
+        const nextPlayer = this.nextPlayer(player);
+        const status = this.generateStatus(winner, nextPlayer);
+
         this.setState({ 
             squares: squares,  
-            currentPlayer: this.nextPlayer(player),
+            currentPlayer: nextPlayer,
+            winner,
+            status
         });
     }
+
+    increaseScore(winner) {
+        let xScore = this.state.xScore;
+        let oScore = this.state.oScore;
+
+        if (this.isX(winner)) {
+            xScore++
+        } else {
+            oScore++;
+        }
+
+        this.setState({ xScore, oScore })
+    }
     
-    chooseWinner(squares) {
+    generateStatus(winner, currentPlayer) {
+        if (winner) {
+            this.increaseScore(winner);
+            return `Winner: ${winner}!`;
+        } else {
+            return `${currentPlayer} Turn`;
+        }
+    }
+    
+    calculateWinner(squares) {
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -75,21 +102,10 @@ export default class Game extends Component {
     }
 
     render() {
-        let status;
-        winner = this.chooseWinner(this.state.squares);
-        
-        if (winner) {
-            if (this.isX(winner)) {
-                xScore++
-            } else {
-                oScore++;
-            }
+        const status = this.state.status;
+        const xScore = this.state.xScore;
+        const oScore = this.state.oScore;
 
-            status = `Vencedor: ${winner}!`;
-        } else {
-            status = `Vez de ${this.state.currentPlayer}`
-        }
-        
         return (
             <div className="game">
                 <ScoreBar xScore={xScore} oScore={oScore}/>
