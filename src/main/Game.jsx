@@ -6,18 +6,17 @@ import ScoreBar from "../components/ScoreBar";
 const initialState = {
     squares: Array(9).fill(null),
     currentPlayer: "X",
-    winner: null
-}
-
-var winner = null;
-var xScore = 0;
-var oScore = 0;
+    winner: null,
+    xScore: 0,
+    oScore: 0,
+    status: "X Turn"
+};
 
 export default class Game extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { ...initialState }
+        this.state = { ...initialState };
     }
 
     nextPlayer(player) {
@@ -30,19 +29,47 @@ export default class Game extends Component {
         const squares = [...this.state.squares];
         const player = this.state.currentPlayer;
         
-        if (this.chooseWinner(squares) || squares[i]) {
+        if (this.calculateWinner(squares) || squares[i]) {
             return;
         }
         
         squares[i] = player;
         
+        const winner = this.calculateWinner(squares);
+        const nextPlayer = this.nextPlayer(player);
+        const status = this.generateStatus(winner, nextPlayer);
+
         this.setState({ 
             squares: squares,  
-            currentPlayer: this.nextPlayer(player),
+            currentPlayer: nextPlayer,
+            winner,
+            status
         });
     }
+
+    increaseScore(winner) {
+        let xScore = this.state.xScore;
+        let oScore = this.state.oScore;
+
+        if (this.isX(winner)) {
+            xScore++;
+        } else {
+            oScore++;
+        }
+
+        this.setState({ xScore, oScore });
+    }
     
-    chooseWinner(squares) {
+    generateStatus(winner, currentPlayer) {
+        if (winner) {
+            this.increaseScore(winner);
+            return `Winner: ${winner}!`;
+        } else {
+            return `${currentPlayer} Turn`;
+        }
+    }
+    
+    calculateWinner(squares) {
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -75,31 +102,18 @@ export default class Game extends Component {
     }
 
     render() {
-        let status;
-        winner = this.chooseWinner(this.state.squares);
-        
-        if (winner) {
-            if (this.isX(winner)) {
-                xScore++
-            } else {
-                oScore++;
-            }
-
-            status = `Vencedor: ${winner}!`;
-        } else {
-            status = `Vez de ${this.state.currentPlayer}`
-        }
-        
         return (
             <div className="game">
-                <ScoreBar xScore={xScore} oScore={oScore}/>
+                <ScoreBar 
+                    xScore={this.state.xScore} 
+                    oScore={this.state.oScore} />
 
                 <Board 
                     squares={this.state.squares}
                     onClick={i => this.handleClick(i)} />
 
                 <div className="info">
-                    <h1>{status}</h1>
+                    <h1>{this.state.status}</h1>
                 </div>
 
                 <button className="restart" onClick={() => this.newGame()}>
