@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import "./Game.css";
 import Board from "../components/Board";
 import ScoreBar from "../components/ScoreBar";
+import Status from "../components/Status";
 
 const initialState = {
     squares: Array(9).fill(null),
     currentPlayer: "X",
     winner: null,
     xScore: 0,
-    oScore: 0,
-    status: "X Turn"
+    oScore: 0
 };
 
 export default class Game extends Component {
@@ -37,13 +37,11 @@ export default class Game extends Component {
         
         const winner = this.calculateWinner(squares);
         const nextPlayer = this.nextPlayer(player);
-        const status = this.generateStatus(winner, nextPlayer);
 
         this.setState({ 
             squares: squares,  
             currentPlayer: nextPlayer,
             winner,
-            status
         });
     }
 
@@ -60,15 +58,6 @@ export default class Game extends Component {
         this.setState({ xScore, oScore });
     }
     
-    generateStatus(winner, currentPlayer) {
-        if (winner) {
-            this.increaseScore(winner);
-            return `Winner: ${winner}!`;
-        } else {
-            return `${currentPlayer} Turn`;
-        }
-    }
-    
     calculateWinner(squares) {
         const lines = [
             [0, 1, 2],
@@ -80,17 +69,18 @@ export default class Game extends Component {
             [0, 4, 8],
             [2, 4, 6]
         ];
-    
+        
         for (const line of lines) {
             const [a, b, c] = line;
             if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+                this.increaseScore(squares[a]);
                 return squares[a];
             }
         }
 
         return null;
     }
-
+    
     isX(player) {
         if (player === "X") {
             return true;
@@ -98,7 +88,10 @@ export default class Game extends Component {
     }
 
     newGame() {
-        this.setState({ ...initialState }); 
+        const xScore = this.state.xScore;
+        const oScore = this.state.oScore;
+        
+        this.setState(Object.assign({},{ ...initialState }, {xScore, oScore})); 
     }
 
     render() {
@@ -112,10 +105,10 @@ export default class Game extends Component {
                     squares={this.state.squares}
                     onClick={i => this.handleClick(i)} />
 
-                <div className="info">
-                    <h1>{this.state.status}</h1>
-                </div>
-
+                <Status 
+                    winner={this.state.winner}
+                    currentPlayer={this.state.currentPlayer} />
+                
                 <button className="restart" onClick={() => this.newGame()}>
                     <i className="material-icons-round">refresh</i>
                 </button>

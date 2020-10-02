@@ -46,3 +46,11 @@
 .game .restart .material-icons-round {
     font-size: 36px;
 }
+
+.game .X-color {
+    color: lime;
+}
+
+.game .O-color {
+    color: fuchsia;
+}

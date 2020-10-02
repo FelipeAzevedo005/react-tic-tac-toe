@@ -9,26 +9,18 @@
     background-color: #0000;
 }
 
-.X {
-    color: lime;
-}
-
-.O {
-    color: fuchsia;
-}
-
-.b-top {
+.square.b-top {
     border-top: none;
 }
 
-.b-right {
+.square.b-right {
     border-right: none;
 }
 
-.b-bottom {
+.square.b-bottom {
     border-bottom: none;
 }
 
-.b-left {
+.square.b-left {
     border-left: none;
 }

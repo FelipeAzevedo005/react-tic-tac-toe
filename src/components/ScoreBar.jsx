@@ -5,10 +5,10 @@ export default props => {
     return (
         <div className="scores">
             <span className="x-score">
-                <strong>X</strong> : {props.xScore}
+                <strong className="X-color">X</strong> : {props.xScore}
             </span>
             <span className="o-score">
-                <strong>O</strong> : {props.oScore}
+                <strong className="O-color">O</strong> : {props.oScore}
             </span>
         </div>
     );
