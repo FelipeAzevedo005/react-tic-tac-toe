@@ -4,8 +4,6 @@ import './index.css';
 import Game from './main/Game';
 
 ReactDOM.render(
-    <div className="game">
-      <Game />
-    </div>,
+      <Game />,
   document.getElementById('root')
 );
