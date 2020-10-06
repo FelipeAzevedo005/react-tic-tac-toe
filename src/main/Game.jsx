@@ -30,7 +30,7 @@ export default class Game extends Component {
         const squares = [...this.state.squares];
         const player = this.state.currentPlayer;
         
-        if (this.calculateWinner(squares) || squares[i]) {
+        if (this.state.winner || squares[i]) {
             return;
         }
         
