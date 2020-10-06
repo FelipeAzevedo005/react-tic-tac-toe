@@ -9,7 +9,8 @@ const initialState = {
     currentPlayer: "X",
     winner: null,
     xScore: 0,
-    oScore: 0
+    oScore: 0,
+    draw: false
 };
 
 export default class Game extends Component {
@@ -36,12 +37,14 @@ export default class Game extends Component {
         squares[i] = player;
         
         const winner = this.calculateWinner(squares);
+        const draw = this.calculateDraw(squares, winner);
         const nextPlayer = this.nextPlayer(player);
 
         this.setState({ 
             squares: squares,  
             currentPlayer: nextPlayer,
             winner,
+            draw
         });
     }
 
@@ -94,6 +97,20 @@ export default class Game extends Component {
         this.setState(Object.assign({},{ ...initialState }, {xScore, oScore})); 
     }
 
+    calculateDraw(squares, winner) {
+        if (winner) {
+            return false;
+        }
+
+        for (const square of squares) {
+            if (!square) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     render() {
         return (
             <div className="game">
@@ -107,7 +124,8 @@ export default class Game extends Component {
 
                 <Status 
                     winner={this.state.winner}
-                    currentPlayer={this.state.currentPlayer} />
+                    currentPlayer={this.state.currentPlayer}
+                    draw={this.state.draw} />
                 
                 <button className="restart" onClick={() => this.newGame()}>
                     <i className="material-icons-round">refresh</i>
